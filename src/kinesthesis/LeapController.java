@@ -20,7 +20,7 @@ public class LeapController {
 		controller.addListener(listener);
 	}
 
-	public Matrix3f getWandAngle() {
+	public Vector getWandAngle() {
 		return wandAngle;
 	}
 
@@ -30,7 +30,12 @@ public class LeapController {
 	}
 
 	public void onUpdate() {
-		latestSpell = new Spell(Math.round(Math.random()) == 0 ? SpellType.LEVITATE : SpellType.SPARKS);
+		if (listener.getSwipe().get()) {
+			latestSpell = new Spell(SpellType.SPARKS);
+		}
+		if (listener.getKeyTap().get()) {
+			latestSpell = new Spell(SpellType.LEVITATE);
+		}
 		wandAngle = listener.getAngle();
 
 	}

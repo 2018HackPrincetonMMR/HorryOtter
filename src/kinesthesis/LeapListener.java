@@ -17,6 +17,9 @@ public class LeapListener extends Listener {
 	private BooleanProperty keyTap= new SimpleBooleanProperty(false);
   public BooleanProperty keyTapProperty() { return keyTap; }
 
+	private BooleanProperty swipe = new SimpleBooleanProperty(false);
+  public BooleanProperty swipeProperty() { return swipe; }
+
   private Vector angleOfTheDangle = new Vector();
   public Vector getAngle() { return angleOfTheDangle; }
 
@@ -36,11 +39,15 @@ public class LeapListener extends Listener {
     	}
     }
     keyTap.set(false);
+		swipe.set(false);
     GestureList gestures = frame.gestures();
     for (int i = 0; i < gestures.count(); i++) {
     	if(gestures.get(i).type()==Gesture.Type.TYPE_KEY_TAP){
     		keyTap.set(true); break;
-         }
+      }
+			if(gestures.get(i).type()==Gesture.Type.TYPE_SWIPE){
+    		swipe.set(true); break;
+      }
     }
 
   }
