@@ -101,7 +101,7 @@ public class SpellController extends AbstractAppState {
 		shootables.collideWith(ray, results);
 		CollisionResult res = results.getClosestCollision();
 		if(res != null) {
-			res.getGeometry().setLocalScale(res.getGeometry().getLocalScale().mult(.9f));
+			res.getGeometry().setLocalScale(res.getGeometry().getLocalScale().mult(.7f));
 		}
 		
 	}

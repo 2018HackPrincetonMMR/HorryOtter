@@ -51,14 +51,31 @@ public class SphinxController {
 	}
 
 	public void onUpdate() {
-		if (utterance.equals("EXPECTO PATRONUM") || utterance.equals("LUMOS")) {
+		switch (utterance) {
+		case "ALOHOMORA":
+			break;
+		case "AVADA KEDAVRA":
+			break;
+		case "EXPECTO PATRONUM":
 			latestSpell = new Spell.AcousticSpell(SpellType.SPARKS);
-			System.out.println("Update: " + latestSpell.getType());
-		}
-		else if (utterance.equals("WINGARDIUM LEVIOSA")) {
+			break;
+		case "EXPELLIARMUS":
+			break;
+		case "LUMOS":
+			break;
+		case "OBLIVIATE":
+			break;
+		case "REDUCIO":
+			latestSpell = new Spell.AcousticSpell(SpellType.SPARKS);
+			break;
+		case "RIDDIKULUS":
+			break;
+		case "WINGARDIUM LEVIOSA":
 			latestSpell = new Spell.AcousticSpell(SpellType.LEVITATE);
-			System.out.println("Update: " + latestSpell.getType());
+			break;
 		}
+		System.out.println("Update: " + latestSpell.getType());
+
 	}
 	
 }
