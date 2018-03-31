@@ -3,7 +3,11 @@ import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
+<<<<<<< HEAD
 import com.jme3.scene.Node;
+=======
+import com.leapmotion.leap.Vector;
+>>>>>>> 840f62925f29c5c5c33b063154bb15cd8fe3d24f
 
 import kinesthesis.LeapController;
 
@@ -14,14 +18,19 @@ public class WandController {
 	private LeapController leapController;
 	private Camera cam;
 	
-	private Matrix3f angle;
+	private Vector angle;
+	
 	
 	public WandController(Geometry wand, Node playerNode, Camera cam, LeapController leapController) {
 		this.leapController = leapController;
 		this.wand = wand;
+<<<<<<< HEAD
 		this.angle = Matrix3f.IDENTITY;
 		this.playerNode = playerNode;
 		this.cam = cam;
+=======
+		this.angle = leapController.getWandAngle();
+>>>>>>> 840f62925f29c5c5c33b063154bb15cd8fe3d24f
 	}
 	
 	public void update() {
@@ -30,7 +39,7 @@ public class WandController {
 		
 	}
 	
-	public Matrix3f getWandAngle() {
+	public Vector getWandAngle() {
 		return angle;
 	}
 
