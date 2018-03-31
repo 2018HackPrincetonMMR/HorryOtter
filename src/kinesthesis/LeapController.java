@@ -11,7 +11,7 @@ public class LeapController {
 	private LeapListener listener;
 	private static Controller controller;
 
-	private Matrix3f wandAngle = Matrix3f.IDENTITY;
+	private Vector wandAngle = new Vector();
 	private Spell latestSpell = new Spell(SpellType.NULL);
 
 	public LeapController() {
@@ -23,17 +23,15 @@ public class LeapController {
 	public Matrix3f getWandAngle() {
 		return wandAngle;
 	}
-	
+
 	public Spell getLatestSpell() {
 		return latestSpell;
-		
+
 	}
 
 	public void onUpdate() {
 		latestSpell = new Spell(Math.round(Math.random()) == 0 ? SpellType.LEVITATE : SpellType.SPARKS);
-		wandAngle = new Matrix3f((float) Math.random(), (float) Math.random(), (float) Math.random(),
-				(float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random(),
-				(float) Math.random(), (float) Math.random());
+		wandAngle = listener.getAngle();
 
 	}
 
