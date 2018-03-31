@@ -6,6 +6,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Cylinder;
 
 import kinesthesis.LeapController;
@@ -16,16 +17,41 @@ public class HorryOtter extends SimpleApplication {
 	private WandController wandController;
 	private SpellController spellController;
 	private Node playerNode;
-
+	private Node shootables;
 
 	@Override
 	public void simpleInitApp() {
-		cam.setLocation(rootNode.getWorldTranslation().add(new Vector3f(0,4,5)));
-		cam.lookAt(new Vector3f(0,1.5f,0), new Vector3f(0,1,0));
+		cam.setLocation(rootNode.getWorldTranslation().add(new Vector3f(0, 0, 5)));
+		cam.lookAt(new Vector3f(0, 0, -10), new Vector3f(0,-1,0));
 		initializeLeap();
+		initializeEnvironment();
 		initializePlayer();
 		initializeWand();
 		initializeSpells();
+
+	}
+
+	private void initializeEnvironment() {
+		shootables = new Node();
+		Box b = new Box(1, 1, 1);
+		Geometry geom = new Geometry("Box1", b);
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", ColorRGBA.Blue);
+		geom.setMaterial(mat);
+		shootables.attachChild(geom);
+		geom.setLocalTranslation(-4, 0, -8);
+		
+		Box b2 = new Box(1, 1, 1);
+		Geometry geom2 = new Geometry("Box2", b2);
+		Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat2.setColor("Color", ColorRGBA.Red);
+		geom2.setMaterial(mat2);
+		shootables.attachChild(geom2);
+		geom2.setLocalTranslation(4
+				, 0, -8);
+		
+		
+		rootNode.attachChild(shootables);
 
 	}
 
@@ -37,7 +63,7 @@ public class HorryOtter extends SimpleApplication {
 	private void initializeSpells() {
 		Node spellNode = new Node();
 		playerNode.attachChild(spellNode);
-		spellController = new SpellController(spellNode, leapController, wandController);
+		spellController = new SpellController(spellNode, leapController, wandController, shootables);
 		stateManager.attach(spellController);
 	}
 
@@ -53,15 +79,13 @@ public class HorryOtter extends SimpleApplication {
 		wand.setMaterial(unshaded);
 		playerNode.attachChild(wand);
 		wand.setLocalTranslation(0, 0, 0);
-		
-		
-		wandController = new WandController(wand, playerNode, cam, leapController);
+
+		wandController = new WandController(wand, playerNode, leapController);
 	}
-	
+
 	@Override
 	public void simpleUpdate(float tpf) {
 		wandController.update();
 	}
-
 
 }

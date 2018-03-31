@@ -13,14 +13,12 @@ public class WandController {
 	private Geometry wand;
 	private Node playerNode;
 	private LeapController leapController;
-	private Camera cam;
 	private Quaternion wandRotation;
 
-	public WandController(Geometry wand, Node playerNode, Camera cam, LeapController leapController) {
+	public WandController(Geometry wand, Node playerNode, LeapController leapController) {
 		this.leapController = leapController;
 		this.wand = wand;
 		this.playerNode = playerNode;
-		this.cam = cam;
 		this.wandRotation = eulerToQuat(leapController.getEulerAngles());
 	}
 
@@ -36,7 +34,7 @@ public class WandController {
 	
 	private Quaternion eulerToQuat(Vector euler) {
 		Quaternion tmp = new Quaternion();
-		return tmp.fromAngles(euler.get(0), euler.get(1), euler.get(2));
+		return tmp.fromAngles(-euler.get(0), euler.get(1), euler.get(2));
 
 	}
 
