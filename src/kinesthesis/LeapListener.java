@@ -5,6 +5,11 @@ import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.Listener;
+<<<<<<< HEAD
+=======
+import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.SwipeGesture;
+>>>>>>> 398a78e8c0b6c7c98c1b6d09490d67c1f387fa82
 import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
@@ -47,6 +52,7 @@ public class LeapListener extends Listener {
 		this.controller = c;
 	}
 
+<<<<<<< HEAD
 	public void onFrame(Controller controller) {
 		this.controller.onUpdate();
 		Frame frame = controller.frame();
@@ -77,3 +83,40 @@ public class LeapListener extends Listener {
 		}
 	}
 }
+=======
+  public void onFrame(Controller controller) {
+  	Frame frame = controller.frame();
+    if (!frame.hands().isEmpty()) {
+    		Hand hand = frame.hands().get(0);
+    		if (hand.isValid() && (hand.fingers().count() == 1))  {
+    			pitch = hand.direction().pitch();
+					yaw = hand.direction().yaw();
+					roll = hand.palmNormal().roll();
+    	}
+    }
+    keyTap = false;
+	swipe = false;
+    for(Gesture gesture : frame.gestures())
+    {
+        switch (gesture.type()) {
+            case TYPE_KEY_TAP:
+                //Handle key tap gestures
+            	keyTap = true;
+                break;
+            case TYPE_SWIPE:
+                //Handle swipe gestures
+            	SwipeGesture swipeG = new SwipeGesture(gesture);
+            	Vector swipeDirection = swipeG.direction();
+            	if (Math.abs(swipeDirection.getX()) > Math.abs(swipeDirection.getY())) {
+                	swipe = true;
+                	break;
+            	}
+            default:
+                //Handle unrecognized gestures
+                break;
+        }
+    }
+
+  }
+}
+>>>>>>> 398a78e8c0b6c7c98c1b6d09490d67c1f387fa82
