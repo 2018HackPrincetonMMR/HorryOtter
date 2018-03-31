@@ -13,10 +13,12 @@ public class WandController {
 	private Geometry wand;
 	private Node playerNode;
 	private LeapController leapController;
+	private SphinxController sphinxController;
 	private Quaternion wandRotation;
 
-	public WandController(Geometry wand, Node playerNode, LeapController leapController) {
+	public WandController(Geometry wand, Node playerNode, LeapController leapController, SphinxController sphinxController) {
 		this.leapController = leapController;
+		this.sphinxController = sphinxController;
 		this.wand = wand;
 		this.playerNode = playerNode;
 		this.wandRotation = eulerToQuat(leapController.getEulerAngles());

@@ -65,7 +65,7 @@ public class HorryOtter extends SimpleApplication {
 	private void initializeSpells() {
 		Node spellNode = new Node();
 		playerNode.attachChild(spellNode);
-		spellController = new SpellController(spellNode, leapController, wandController, shootables);
+		spellController = new SpellController(spellNode, leapController, wandController, sphinxController, shootables);
 		stateManager.attach(spellController);
 	}
 
@@ -86,7 +86,7 @@ public class HorryOtter extends SimpleApplication {
 		playerNode.attachChild(wand);
 		wand.setLocalTranslation(0, 0, 0);
 
-		wandController = new WandController(wand, playerNode, leapController);
+		wandController = new WandController(wand, playerNode, leapController, sphinxController);
 	}
 
 	@Override
