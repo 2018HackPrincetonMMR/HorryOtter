@@ -22,14 +22,19 @@ public class SpellController extends AbstractAppState {
 	private Node spellNode;
 	private LeapController leapController;
 	private WandController wandController;
+	private SphinxController sphinxController;
 
 	private Spell lastSpell;
 	private long timeOfLastSpell;
-	private final int DEBOUNSE_TIME = 1000;
+	private final int DEBOUNCE_TIME = 1000;
 	private final int LASTING_TIME = 300;
+	private final int BUFFER_TIME = 750;
 
 	private Geometry beam;
 	private Node shootables;
+	
+	private boolean currentlyCastingLevitate = false;
+	private Geometry hitObj;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
@@ -44,9 +49,10 @@ public class SpellController extends AbstractAppState {
 		beam.setMaterial(unshaded);
 	}
 
-	public SpellController(Node spellNode, LeapController leapController, WandController wandController, Node shootables) {
+	public SpellController(Node spellNode, LeapController leapController, WandController wandController, SphinxController sphinxController, Node shootables) {
 		this.lastSpell = leapController.getLatestSpell();
 		this.leapController = leapController;
+		this.sphinxController = sphinxController;
 		this.spellNode = spellNode;
 		this.wandController = wandController;
 		timeOfLastSpell = 0;
@@ -57,14 +63,21 @@ public class SpellController extends AbstractAppState {
 	public void update(float tpf) {
 		long currentTime = System.currentTimeMillis();
 		
-		if (currentTime - timeOfLastSpell > LASTING_TIME)
+		if (currentTime - timeOfLastSpell > LASTING_TIME) {
+			currentlyCastingLevitate = false;
 			spellNode.detachAllChildren();
+		}
+		else if (currentlyCastingLevitate && hitObj != null && beam != null) {
+			hitObj.setLocalTranslation(new Vector3f(hitObj.getLocalTranslation().x, beam.getWorldTranslation().y, hitObj.getLocalTranslation().z));
+		}
 
-		if (currentTime - timeOfLastSpell < DEBOUNSE_TIME)
+		if (currentTime - timeOfLastSpell < DEBOUNCE_TIME)
 			return;
 
-		Spell nextSpell = leapController.getLatestSpell();
-		if (nextSpell.getID() == lastSpell.getID())
+		Spell nextGestureSpell = leapController.getLatestSpell();
+		Spell nextSpeechSpell = sphinxController.getLatestSpell();
+		
+		if (Math.abs(nextGestureSpell.getID() - nextSpeechSpell.getID()) >= BUFFER_TIME)
 			return;
 
 		switch (nextSpell.getType()) {
@@ -72,7 +85,7 @@ public class SpellController extends AbstractAppState {
 			break;
 		case LEVITATE:
 			timeOfLastSpell = currentTime;
-
+			castLevitate();
 			break;
 		case SPARKS:
 			timeOfLastSpell = currentTime;
@@ -94,7 +107,14 @@ public class SpellController extends AbstractAppState {
 	}
 
 	private void castLevitate() {
-		// TODO Auto-generated method stub
-
+		currentlyCastingLevitate = true;
+		spellNode.attachChild(beam);
+		CollisionResults results = new CollisionResults();
+		Ray ray = new Ray(spellNode.getWorldTranslation(), beam.getWorldTranslation());
+		shootables.collideWith(ray, results);
+		CollisionResult res = results.getClosestCollision();
+		if (res != null) {
+			hitObj = res.getGeometry();
+		}
 	}
 }
