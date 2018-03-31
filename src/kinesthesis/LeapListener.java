@@ -23,6 +23,21 @@ public class LeapListener extends Listener {
   private Vector angleOfTheDangle = new Vector();
   public Vector getAngle() { return angleOfTheDangle; }
 
+	private float pitch = 0.0;
+	private float yaw = 0.0;
+	private float roll = 0.0;
+
+	public float getRoll() {
+		return roll;
+	}
+
+	public float getYaw() {
+		return yaw;
+	}
+	public float getPitch() {
+		return pitch;
+	}
+
 	public LeapListener(LeapController c) {
 		this.controller = c;
 	}
@@ -34,7 +49,10 @@ public class LeapListener extends Listener {
     	if (screen != null && screen.isValid()){
     		Hand hand = frame.hands().get(0);
     		if (hand.isValid() && (hand.fingers().count() == 1))  {
-    			Vector intersect = screen.intersect(hand.palmPosition(),hand.direction(), true);
+    			pitch = hand.Direction.Pitch;
+					yaw = hand.Direction.Yaw;
+					roll = hand.PalmNormal.Roll;
+
     		}
     	}
     }
