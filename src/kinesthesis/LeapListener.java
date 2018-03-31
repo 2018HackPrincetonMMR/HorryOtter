@@ -26,12 +26,14 @@ public class LeapListener extends Listener {
 		System.out.println("Disconnected");
 	}
 
+	long count = 0;
+
 	@Override
 	public void onFrame(Controller controller) {
-		//System.out.println("I've been framed");
-		leapController.onUpdate();
-
-
+		// System.out.println("I've been framed");
+		if (count++ % 5
+				== 0)
+			leapController.onUpdate();
 
 	}
 }

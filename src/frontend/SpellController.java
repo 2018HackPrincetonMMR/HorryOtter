@@ -8,6 +8,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Cylinder;
@@ -42,7 +43,6 @@ public class SpellController extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
-		System.out.println("wks");
 		long currentTime = System.currentTimeMillis();
 
 		if (currentTime - timeOfLastSpell < DEBOUNSE_TIME)
@@ -70,12 +70,12 @@ public class SpellController extends AbstractAppState {
 		Matrix3f angle = wandController.getWandAngle();
 
 		Material unshaded = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		unshaded.setColor("Color", ColorRGBA.Brown);
-		Cylinder beamShape = new Cylinder(100, 100, .2f, 100, true);
+		unshaded.setColor("Color", ColorRGBA.Yellow);
+		Cylinder beamShape = new Cylinder(100, 100, .2f, 10, true);
 		Geometry beam = new Geometry("Wand", beamShape);
-		beam.setMaterial(unshaded);
-		beam.setLocalRotation(angle);
 		spellNode.attachChild(beam);
+		beam.setLocalTranslation(new Vector3f(0,0,-10));
+		beam.setMaterial(unshaded);
 
 	}
 

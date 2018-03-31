@@ -3,6 +3,7 @@ package frontend;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Cylinder;
@@ -19,6 +20,8 @@ public class HorryOtter extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+		cam.setLocation(rootNode.getWorldTranslation().add(new Vector3f(0,4,5)));
+		cam.lookAt(new Vector3f(0,1.5f,0), new Vector3f(0,1,0));
 		initializeLeap();
 		initializePlayer();
 		initializeWand();
@@ -35,6 +38,7 @@ public class HorryOtter extends SimpleApplication {
 		Node spellNode = new Node();
 		playerNode.attachChild(spellNode);
 		spellController = new SpellController(spellNode, leapController, wandController);
+		stateManager.attach(spellController);
 	}
 
 	private void initializeLeap() {
@@ -42,17 +46,16 @@ public class HorryOtter extends SimpleApplication {
 	}
 
 	private void initializeWand() {
-		
 		Material unshaded = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		unshaded.setColor("Color", ColorRGBA.Brown);
 		Cylinder wandShape = new Cylinder(100, 100, .2f, 1, true);
 		Geometry wand = new Geometry("Wand", wandShape);
 		wand.setMaterial(unshaded);
-		wand.rotate(.5f, 0, 0);
 		playerNode.attachChild(wand);
+		wand.setLocalTranslation(0, 0, 0);
 		
-		wandController = new WandController(wand, leapController);
-
+		
+		wandController = new WandController(wand, playerNode, cam, leapController);
 	}
 	
 	@Override
