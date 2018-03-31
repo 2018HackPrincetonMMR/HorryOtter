@@ -2,6 +2,7 @@ package kinesthesis;
 
 import com.jme3.math.Matrix3f;
 import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Vector;
 
 import frontend.Spell;
 import frontend.Spell.SpellType;
