@@ -1,7 +1,7 @@
 package kinesthesis;
 
-import com.jme3.math.Matrix3f;
 import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.Vector;
 
 import frontend.Spell;
@@ -12,17 +12,20 @@ public class LeapController {
 	private LeapListener listener;
 	private static Controller controller;
 
-	private Vector wandAngle = new Vector();
+	private Vector eulerAngle = new Vector();
 	private Spell latestSpell = new Spell(SpellType.NULL);
 
 	public LeapController() {
 		listener = new LeapListener(this);
 		controller = new Controller();
+		controller.enableGesture(Gesture.Type.TYPE_KEY_TAP,true);
+		controller.enableGesture(Gesture.Type.TYPE_SWIPE,true);
+
 		controller.addListener(listener);
 	}
 
-	public Vector getWandAngle() {
-		return wandAngle;
+	public Vector getEulerAngles() {
+		return eulerAngle;
 	}
 
 	public Spell getLatestSpell() {
@@ -32,12 +35,15 @@ public class LeapController {
 
 	public void onUpdate() {
 		if (listener.getSwipe()) {
-			latestSpell = new Spell(SpellType.SPARKS);
-		}
-		if (listener.getKeyTap()) {
 			latestSpell = new Spell(SpellType.LEVITATE);
 		}
-		wandAngle = listener.getAngle();
+		else if (listener.getKeyTap()) {
+			latestSpell = new Spell(SpellType.SPARKS);
+		}
+		else {
+			latestSpell = new Spell(SpellType.NULL);
+		}
+		eulerAngle = listener.getAngle();
 
 	}
 
