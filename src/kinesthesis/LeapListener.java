@@ -14,11 +14,11 @@ public class LeapListener extends Listener {
 
 	private LeapController controller;
 
-	private BooleanProperty keyTap= new SimpleBooleanProperty(false);
-  public BooleanProperty keyTapProperty() { return keyTap; }
+	private boolean keyTap= new false;
+  public boolean getKeyTap() { return keyTap; }
 
-	private BooleanProperty swipe = new SimpleBooleanProperty(false);
-  public BooleanProperty swipeProperty() { return swipe; }
+	private boolean swipe = false;
+  public boolean getSwipe() { return swipe; }
 
   private Vector angleOfTheDangle = new Vector();
   public Vector getAngle() { return angleOfTheDangle; }
@@ -29,7 +29,7 @@ public class LeapListener extends Listener {
 
   public void onFrame(Controller controller) {
   	Frame frame = controller.frame();
-    if (!frame.hands().empty()) {
+    if (!frame.hands().isEmpty()) {
     	Screen screen = controller.calibratedScreens().get(0);
     	if (screen != null && screen.isValid()){
     		Hand hand = frame.hands().get(0);
@@ -38,15 +38,17 @@ public class LeapListener extends Listener {
     		}
     	}
     }
-    keyTap.set(false);
-		swipe.set(false);
+    keyTap = false;
+		swipe = false;
     GestureList gestures = frame.gestures();
     for (int i = 0; i < gestures.count(); i++) {
     	if(gestures.get(i).type()==Gesture.Type.TYPE_KEY_TAP){
-    		keyTap.set(true); break;
+    		keyTap = true;
+				break;
       }
 			if(gestures.get(i).type()==Gesture.Type.TYPE_SWIPE){
-    		swipe.set(true); break;
+    		swipe = true;
+				break;
       }
     }
 

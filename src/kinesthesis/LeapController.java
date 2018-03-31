@@ -30,10 +30,10 @@ public class LeapController {
 	}
 
 	public void onUpdate() {
-		if (listener.getSwipe().get()) {
+		if (listener.getSwipe()) {
 			latestSpell = new Spell(SpellType.SPARKS);
 		}
-		if (listener.getKeyTap().get()) {
+		if (listener.getKeyTap()) {
 			latestSpell = new Spell(SpellType.LEVITATE);
 		}
 		wandAngle = listener.getAngle();
