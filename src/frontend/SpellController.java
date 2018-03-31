@@ -22,11 +22,13 @@ public class SpellController extends AbstractAppState {
 	private Node spellNode;
 	private LeapController leapController;
 	private WandController wandController;
+	private SphinxController sphinxController;
 
 	private Spell lastSpell;
 	private long timeOfLastSpell;
 	private final int DEBOUNCE_TIME = 1000;
 	private final int LASTING_TIME = 300;
+	private final int BUFFER_TIME = 750;
 
 	private Geometry beam;
 	private Node shootables;
@@ -47,9 +49,10 @@ public class SpellController extends AbstractAppState {
 		beam.setMaterial(unshaded);
 	}
 
-	public SpellController(Node spellNode, LeapController leapController, WandController wandController, Node shootables) {
+	public SpellController(Node spellNode, LeapController leapController, WandController wandController, SphinxController sphinxController, Node shootables) {
 		this.lastSpell = leapController.getLatestSpell();
 		this.leapController = leapController;
+		this.sphinxController = sphinxController;
 		this.spellNode = spellNode;
 		this.wandController = wandController;
 		timeOfLastSpell = 0;
@@ -71,8 +74,10 @@ public class SpellController extends AbstractAppState {
 		if (currentTime - timeOfLastSpell < DEBOUNCE_TIME)
 			return;
 
-		Spell nextSpell = leapController.getLatestSpell();
-		if (nextSpell.getID() == lastSpell.getID())
+		Spell nextGestureSpell = leapController.getLatestSpell();
+		Spell nextSpeechSpell = sphinxController.getLatestSpell();
+		
+		if (Math.abs(nextGestureSpell.getID() - nextSpeechSpell.getID()) >= BUFFER_TIME)
 			return;
 
 		switch (nextSpell.getType()) {

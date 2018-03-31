@@ -16,6 +16,7 @@ public class HorryOtter extends SimpleApplication {
 	private LeapController leapController;
 	private WandController wandController;
 	private SpellController spellController;
+	private SphinxController sphinxController;
 	private Node playerNode;
 	private Node shootables;
 
@@ -24,6 +25,7 @@ public class HorryOtter extends SimpleApplication {
 		cam.setLocation(rootNode.getWorldTranslation().add(new Vector3f(0, 0, 5)));
 		cam.lookAt(new Vector3f(0, 0, -10), new Vector3f(0,-1,0));
 		initializeLeap();
+		initializeSphinx();
 		initializeEnvironment();
 		initializePlayer();
 		initializeWand();
@@ -69,6 +71,10 @@ public class HorryOtter extends SimpleApplication {
 
 	private void initializeLeap() {
 		leapController = new LeapController();
+	}
+	
+	private void initializeSphinx() {
+		sphinxController = new SphinxController();
 	}
 
 	private void initializeWand() {
