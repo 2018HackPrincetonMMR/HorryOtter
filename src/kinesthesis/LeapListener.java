@@ -10,6 +10,7 @@ import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.SwipeGesture;
 import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
@@ -64,8 +65,12 @@ public class LeapListener extends Listener {
                 break;
             case TYPE_SWIPE:
                 //Handle swipe gestures
-            	swipe = true;
-                break;
+            	SwipeGesture swipeG = new SwipeGesture(gesture);
+            	Vector swipeDirection = swipeG.direction();
+            	if (Math.abs(swipeDirection.getX()) > Math.abs(swipeDirection.getY())) {
+                	swipe = true;
+                	break;
+            	}
             default:
                 //Handle unrecognized gestures
                 break;
