@@ -80,7 +80,7 @@ public class SpellController extends AbstractAppState {
 		if (Math.abs(nextGestureSpell.getID() - nextSpeechSpell.getID()) >= BUFFER_TIME)
 			return;
 
-		switch (nextSpell.getType()) {
+		switch (nextSpeechSpell.getType()) {
 		case NULL:
 			break;
 		case LEVITATE:
@@ -117,4 +117,27 @@ public class SpellController extends AbstractAppState {
 			hitObj = res.getGeometry();
 		}
 	}
+	
+	private void castAvadaKedavara() {
+		spellNode.attachChild(beam);
+		CollisionResults results = new CollisionResults();
+		Ray ray = new Ray(spellNode.getWorldTranslation(), beam.getWorldTranslation());
+		shootables.collideWith(ray, results);
+		CollisionResult res = results.getClosestCollision();
+		if(res != null) {
+			res.getGeometry().setLocalScale(res.getGeometry().getLocalScale().mult(0f));
+		}
+	}
+	
+	private void castLumos() {
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(1.3f));
+		rootNode.addLight(al);
+	}
+	
+	private void castExpectoPatronum() {
+		
+	}
+	
+	
 }
