@@ -1,19 +1,14 @@
 package frontend;
 
-public class Spell {
+public abstract class Spell {
 
 	public enum SpellType {
 		NULL /* Always type your nulls! */, LEVITATE, SPARKS
 	}
 
-	private static long idCount;
-	private SpellType type;
-	private long id;
-
-	public Spell(SpellType type) {
-		this.type = type;
-		this.id = idCount++;
-	}
+	static long idCount;
+	SpellType type;
+	long id;
 
 	public SpellType getType() {
 		return type;
@@ -21,5 +16,21 @@ public class Spell {
 
 	public long getID() {
 		return id;
+	}
+	
+	public static class GestureSpell extends Spell {
+		public GestureSpell(SpellType type) {
+			this.type = type;
+			this.id = System.currentTimeMillis();
+		}
+
+		
+	}
+	
+	public static class AcousticSpell extends Spell {
+		public AcousticSpell(SpellType type) {
+			this.type = type;
+			this.id = System.currentTimeMillis();
+		}
 	}
 }

@@ -13,7 +13,7 @@ public class LeapController {
 	private static Controller controller;
 
 	private Vector eulerAngle = new Vector();
-	private Spell latestSpell = new Spell(SpellType.NULL);
+	private Spell latestSpell = new Spell.GestureSpell(SpellType.NULL);
 
 	public LeapController() {
 		listener = new LeapListener(this);
@@ -35,13 +35,13 @@ public class LeapController {
 
 	public void onUpdate() {
 		if (listener.getSwipe()) {
-			latestSpell = new Spell(SpellType.LEVITATE);
+			latestSpell = new Spell.GestureSpell(SpellType.LEVITATE);
 		}
 		else if (listener.getKeyTap()) {
-			latestSpell = new Spell(SpellType.SPARKS);
+			latestSpell = new Spell.GestureSpell(SpellType.SPARKS);
 		}
 		else {
-			latestSpell = new Spell(SpellType.NULL);
+			latestSpell = new Spell.GestureSpell(SpellType.NULL);
 		}
 		eulerAngle = listener.getAngle();
 
