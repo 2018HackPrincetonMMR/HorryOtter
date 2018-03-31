@@ -28,7 +28,7 @@ public class LeapListener extends Listener {
 
 	@Override
 	public void onFrame(Controller controller) {
-		System.out.println("I've been framed");
+		//System.out.println("I've been framed");
 		leapController.onUpdate();
 
 
