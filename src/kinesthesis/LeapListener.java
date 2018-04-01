@@ -63,11 +63,11 @@ public class LeapListener extends Listener {
 		for (Gesture gesture : frame.gestures()) {
 			switch (gesture.type()) {
 			case TYPE_KEY_TAP:
-				// Handle key tap gestures
+				System.out.println("TAP");
 				keyTap = true;
 				break;
 			case TYPE_SWIPE:
-				// Handle swipe gestures
+				System.out.println("SWIPE");
 				swipe = true;
 				break;
 			default:

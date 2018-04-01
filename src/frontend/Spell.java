@@ -3,25 +3,27 @@ package frontend;
 public abstract class Spell {
 
 	public enum SpellType {
-		NULL /* Always type your nulls! */, LEVITATE, SPARKS
+		NULL, /* Always type your nulls! */ LEVITATE, SPARKS, AVADA, LUMOS, EXPECTO
 	}
 
-	static long idCount;
 	SpellType type;
-	long id;
+	long constructionTime;
 
 	public SpellType getType() {
 		return type;
 	}
 
-	public long getID() {
-		return id;
+	public long getConstructionTime() {
+		return constructionTime;
 	}
 	
 	public static class GestureSpell extends Spell {
 		public GestureSpell(SpellType type) {
+			this.constructionTime = System.currentTimeMillis();
+
+			if(type == SpellType.NULL)
+				this.constructionTime = 0;
 			this.type = type;
-			this.id = System.currentTimeMillis();
 		}
 
 		
@@ -30,7 +32,7 @@ public abstract class Spell {
 	public static class AcousticSpell extends Spell {
 		public AcousticSpell(SpellType type) {
 			this.type = type;
-			this.id = System.currentTimeMillis();
+			this.constructionTime = System.currentTimeMillis();
 		}
 	}
 }

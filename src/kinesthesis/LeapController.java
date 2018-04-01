@@ -5,6 +5,7 @@ import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.Vector;
 
 import frontend.Spell;
+import frontend.Spell.GestureSpell;
 import frontend.Spell.SpellType;
 
 public class LeapController {
@@ -16,6 +17,9 @@ public class LeapController {
 	private Spell latestSpell = new Spell.GestureSpell(SpellType.NULL);
 
 	public LeapController() {
+	}
+	public void start() {
+		
 		listener = new LeapListener(this);
 		controller = new Controller();
 		controller.enableGesture(Gesture.Type.TYPE_KEY_TAP,true);
@@ -41,10 +45,13 @@ public class LeapController {
 			latestSpell = new Spell.GestureSpell(SpellType.SPARKS);
 		}
 		else {
-			latestSpell = new Spell.GestureSpell(SpellType.NULL);
 		}
 		eulerAngle = listener.getAngle();
 
+	}
+	public void setLatestSpell(GestureSpell gestureSpell) {
+		latestSpell = gestureSpell;
+		
 	}
 
 }

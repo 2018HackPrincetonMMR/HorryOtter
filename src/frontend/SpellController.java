@@ -5,7 +5,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
@@ -13,6 +12,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Cylinder;
+import com.jme3.texture.Texture2D;
+import com.jme3.ui.Picture;
 
 import kinesthesis.LeapController;
 import sphinx.SphinxController;
@@ -29,7 +30,7 @@ public class SpellController extends AbstractAppState {
 	private Spell lastSpell;
 	private long timeOfLastSpell;
 	private final int DEBOUNCE_TIME = 1000;
-	private final int LASTING_TIME = 300;
+	private final int LASTING_TIME = 750;
 	private final int BUFFER_TIME = 750;
 
 	private Geometry beam;
@@ -37,6 +38,8 @@ public class SpellController extends AbstractAppState {
 	
 	private boolean currentlyCastingLevitate = false;
 	private Geometry hitObj;
+	
+	private float lumosedTime = 0;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
@@ -61,9 +64,19 @@ public class SpellController extends AbstractAppState {
 		this.shootables = shootables;
 	}
 
+	private int horryCount = 0;
 	@Override
 	public void update(float tpf) {
 		long currentTime = System.currentTimeMillis();
+		if(lumosedTime>0) {
+			lumosedTime--;
+			app.getViewPort().setBackgroundColor(new ColorRGBA(lumosedTime/255, lumosedTime/255, lumosedTime/255, 1));
+		}
+		if(horryCount > 0) {
+			horryCount--;
+		} else {
+			app.getRootNode().detachChildNamed("horry");
+		}
 		
 		if (currentTime - timeOfLastSpell > LASTING_TIME) {
 			currentlyCastingLevitate = false;
@@ -78,9 +91,15 @@ public class SpellController extends AbstractAppState {
 
 		Spell nextGestureSpell = leapController.getLatestSpell();
 		Spell nextSpeechSpell = sphinxController.getLatestSpell();
+				
+//		if(nextGestureSpell.getType() != Spell.SpellType.NULL || nextSpeechSpell.getType() != Spell.SpellType.NULL)
+//			return;
 		
-		if (Math.abs(nextGestureSpell.getID() - nextSpeechSpell.getID()) >= BUFFER_TIME)
+		if(Math.abs(nextGestureSpell.getConstructionTime() - nextSpeechSpell.getConstructionTime()) > 1000)
 			return;
+		
+		leapController.setLatestSpell(new Spell.GestureSpell(Spell.SpellType.NULL));
+		sphinxController.setLatestSpell(new Spell.AcousticSpell(Spell.SpellType.NULL));
 
 		switch (nextSpeechSpell.getType()) {
 		case NULL:
@@ -93,7 +112,19 @@ public class SpellController extends AbstractAppState {
 			timeOfLastSpell = currentTime;
 			castSpark();
 			break;
-		}
+		case AVADA:
+			timeOfLastSpell = currentTime;
+			castAvadaKedavara();
+			break;
+		case LUMOS:
+			timeOfLastSpell = currentTime;
+			castLumos();
+			break;
+		case EXPECTO:
+			timeOfLastSpell = currentTime;
+			castExpectoPatronum();
+			break;
+		}			
 	}
 
 	private void castSpark() {
@@ -109,6 +140,7 @@ public class SpellController extends AbstractAppState {
 	}
 
 	private void castLevitate() {
+		System.out.println("yes!");
 		currentlyCastingLevitate = true;
 		spellNode.attachChild(beam);
 		CollisionResults results = new CollisionResults();
@@ -132,12 +164,24 @@ public class SpellController extends AbstractAppState {
 	}
 	
 	private void castLumos() {
-		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(1.3f));
-		app.getRootNode().addLight(al);
+		lumosedTime = 255;
+		app.getViewPort().setBackgroundColor(ColorRGBA.White);
 	}
 	
 	private void castExpectoPatronum() {
+		Texture2D horryTex = (Texture2D)app.getAssetManager().loadTexture("Textures/youreAnOtterHorry.jpg");
+		float width = horryTex.getImage().getWidth();
+		float height = horryTex.getImage().getHeight();
+		
+		Picture p = new Picture("horry");
+		p.setTexture(app.getAssetManager(), horryTex, true);
+		p.setWidth(app.getScreenWidth());
+		p.setHeight(app.getScreenHeight());
+		
+		horryCount = 50;
+		
+		
+		app.getRootNode().attachChild(p);
 		
 	}
 	

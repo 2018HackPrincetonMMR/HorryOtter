@@ -4,10 +4,14 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Cylinder;
+import com.jme3.texture.Texture;
+import com.jme3.texture.Texture2D;
+import com.jme3.ui.Picture;
 
 import kinesthesis.LeapController;
 import sphinx.SphinxController;
@@ -23,8 +27,10 @@ public class HorryOtter extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+
+		
 		cam.setLocation(rootNode.getWorldTranslation().add(new Vector3f(0, 0, 5)));
-		cam.lookAt(new Vector3f(0, 0, -10), new Vector3f(0,-1,0));
+		cam.lookAt(new Vector3f(0, 0, -10), new Vector3f(0, -1, 0));
 		initializeLeap();
 		initializeSphinx();
 		initializeEnvironment();
@@ -43,18 +49,19 @@ public class HorryOtter extends SimpleApplication {
 		geom.setMaterial(mat);
 		shootables.attachChild(geom);
 		geom.setLocalTranslation(-4, 0, -8);
-		
+
 		Box b2 = new Box(1, 1, 1);
 		Geometry geom2 = new Geometry("Box2", b2);
 		Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat2.setColor("Color", ColorRGBA.Red);
 		geom2.setMaterial(mat2);
 		shootables.attachChild(geom2);
-		geom2.setLocalTranslation(4
-				, 0, -8);
-		
-		
+		geom2.setLocalTranslation(4, 0, -8);
+
 		rootNode.attachChild(shootables);
+		
+		
+
 
 	}
 
@@ -71,11 +78,18 @@ public class HorryOtter extends SimpleApplication {
 	}
 
 	private void initializeLeap() {
+		
 		leapController = new LeapController();
+		new Thread(() -> {
+			leapController.start();
+		}).start();
 	}
-	
+
 	private void initializeSphinx() {
 		sphinxController = new SphinxController();
+		new Thread(() -> {
+			sphinxController.start();
+		}).start();
 	}
 
 	private void initializeWand() {
@@ -89,10 +103,22 @@ public class HorryOtter extends SimpleApplication {
 
 		wandController = new WandController(wand, playerNode, leapController, sphinxController);
 	}
+	
+	 @Override
+	public void destroy() {
+		super.destroy();
+		System.exit(0);
+	}
 
 	@Override
 	public void simpleUpdate(float tpf) {
 		wandController.update();
 	}
-
+	
+	public int getScreenWidth() {
+		return settings.getWidth();
+	}
+	public int getScreenHeight() {
+		return settings.getHeight();
+	}
 }
