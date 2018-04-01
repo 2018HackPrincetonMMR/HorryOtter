@@ -1,12 +1,12 @@
 package frontend;
 
 import com.jme3.math.Quaternion;
-import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.leapmotion.leap.Vector;
 
 import kinesthesis.LeapController;
+import sphinx.SphinxController;
 
 public class WandController {
 

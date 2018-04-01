@@ -10,6 +10,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Cylinder;
 
 import kinesthesis.LeapController;
+import sphinx.SphinxController;
 
 public class HorryOtter extends SimpleApplication {
 
@@ -67,6 +68,7 @@ public class HorryOtter extends SimpleApplication {
 		playerNode.attachChild(spellNode);
 		spellController = new SpellController(spellNode, leapController, wandController, sphinxController, shootables);
 		stateManager.attach(spellController);
+		stateManager.attach(sphinxController);
 	}
 
 	private void initializeLeap() {

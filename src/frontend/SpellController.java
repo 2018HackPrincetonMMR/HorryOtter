@@ -5,6 +5,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
@@ -14,6 +15,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Cylinder;
 
 import kinesthesis.LeapController;
+import sphinx.SphinxController;
 
 public class SpellController extends AbstractAppState {
 
@@ -132,7 +134,7 @@ public class SpellController extends AbstractAppState {
 	private void castLumos() {
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(1.3f));
-		rootNode.addLight(al);
+		app.getRootNode().addLight(al);
 	}
 	
 	private void castExpectoPatronum() {
