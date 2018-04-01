@@ -68,7 +68,6 @@ public class HorryOtter extends SimpleApplication {
 		playerNode.attachChild(spellNode);
 		spellController = new SpellController(spellNode, leapController, wandController, sphinxController, shootables);
 		stateManager.attach(spellController);
-		stateManager.attach(sphinxController);
 	}
 
 	private void initializeLeap() {
